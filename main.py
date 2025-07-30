@@ -3,10 +3,11 @@ import csv
 import tempfile
 import subprocess
 from datetime import datetime
+from zoneinfo import ZoneInfo
 
 CSV_FILE = "input.csv"
 OUTPUT_DIR = os.path.abspath(r"sbom_outputs")
-TRIVY_PATH = os.path.abspath(r".\trivy_0.64.1_windows-64bit\trivy.exe")
+TRIVY_PATH = "/usr/local/bin/trivy"
 
 def create_sbom_for_package(language, name, version, date_str):
     if language.lower() != "python":
@@ -43,7 +44,7 @@ def create_sbom_for_package(language, name, version, date_str):
 
 def main():
     os.makedirs(OUTPUT_DIR, exist_ok=True)
-    today_str = datetime.now().strftime("%Y%m%d")
+    today_str = datetime.now(ZoneInfo("Asia/Tokyo")).strftime("%Y%m%d")
 
     with open(CSV_FILE, newline='', encoding="utf-8") as f:
         reader = csv.reader(f)
